@@ -6,7 +6,6 @@ import { GetUsersResponse } from "@/services/randomUserApi.types";
 import { ZodError, z } from "zod";
 import { pageSchema } from "@/schemas/pageSchema";
 import Error from "next/error";
-import { UsersTable } from "@/components/UsersList/UsersList";
 import {
   Box,
   Container,
@@ -19,6 +18,7 @@ import { useSearchParams } from "next/navigation";
 import { TOTAL_PAGES } from "@/constants/constants";
 import { useState } from "react";
 import { UserDetail } from "@/components/UserDetail/UserDetail";
+import { UsersList } from "@/components/UsersList/UsersList";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -100,35 +100,12 @@ export default function Home(
               handleBackBtnClick={() => setUserDetail(null)}
             />
           ) : (
-            <>
-              <Typography
-                sx={{
-                  my: 2,
-                }}
-                variant="h4"
-                component={"h1"}
-              >
-                Users
-              </Typography>
-              <UsersTable users={props.users} setUserDetail={setUserDetail} />
-              {!!props.users.length && (
-                <Box
-                  sx={{
-                    my: 2,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Pagination
-                    count={TOTAL_PAGES}
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePageChange}
-                    page={defaultPage}
-                  />
-                </Box>
-              )}
-            </>
+            <UsersList
+              handlePageChange={handlePageChange}
+              setUserDetail={setUserDetail}
+              users={props.users}
+              defaultPage={defaultPage}
+            />
           )}
         </Container>
       </main>

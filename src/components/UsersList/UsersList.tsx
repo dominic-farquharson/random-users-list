@@ -1,32 +1,49 @@
-import { GetUsersResponse } from "@/services/randomUserApi.types";
+import { UsersGrid, UsersGridProps } from "@/components/UsersList/UsersGrid";
 import {
-  Grid,
+  Box,
+  Pagination,
+  PaginationProps,
+  Typography,
 } from "@mui/material";
-import { UserCard } from "./UserCard";
+import { TOTAL_PAGES } from "@/constants/constants";
 import React from "react";
 
-export interface UsersTableProps {
-  users: GetUsersResponse["results"];
-  setUserDetail: React.Dispatch<React.SetStateAction<GetUsersResponse["results"][0] | null>>
+export interface UsersListProps extends UsersGridProps {
+  handlePageChange: PaginationProps["onChange"];
+  defaultPage?: PaginationProps["defaultPage"];
 }
 
-export const UsersTable: React.FC<UsersTableProps> = (props) => {
+export const UsersList: React.FC<UsersListProps> = (props) => {
   return (
-    <Grid container spacing={3}>
-      {props.users.map((el) => {
-        return (
-          <Grid item xs={12} md={6} lg={4} key={el.login.uuid}>
-            <UserCard
-              age={el.dob.age}
-              profileImage={el.picture.large}
-              city={el.location.city}
-              name={el.name}
-              id={el.login.uuid}
-              onClick={() => props.setUserDetail(el)}
-            />
-          </Grid>
-        );
-      })}
-    </Grid>
+    <>
+      <Typography
+        sx={{
+          my: 2,
+        }}
+        variant="h4"
+        component={"h1"}
+      >
+        Users
+      </Typography>
+      <UsersGrid users={props.users} setUserDetail={props.setUserDetail} />
+      {!!props.users.length && (
+        <Box
+          data-testid="pagination"
+          sx={{
+            my: 2,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            count={TOTAL_PAGES}
+            variant="outlined"
+            shape="rounded"
+            onChange={props.handlePageChange}
+            page={props.defaultPage}
+          />
+        </Box>
+      )}
+    </>
   );
 };

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 
-type UserCardProps = {
+export interface UserCardProps {
   profileImage: string;
   name: Name;
   age: number;
@@ -42,7 +42,7 @@ export const UserCard = (props: UserCardProps) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={props.onClick}>
+        <Button size="small">
           Learn More
         </Button>
       </CardActions>
